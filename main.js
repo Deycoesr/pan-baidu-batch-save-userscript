@@ -122,6 +122,7 @@
     if (targetFolders) {
       targetFolders = targetFolders
         .split(PATH_SPLIT_REGEX)
+        .map((url) => url.trim())
         .filter((path) => path.length > 0);
     } else {
       targetFolders = [];
