@@ -4,7 +4,7 @@
 // @version      0.3.1
 // @description  batch save
 // @author       deycoesr@gmail.com
-// @match        *://pan.baidu.com/disk/main*
+// @match        *://pan.baidu.com/disk/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=baidu.com
 // @grant        unsafeWindow
 // ==/UserScript==
