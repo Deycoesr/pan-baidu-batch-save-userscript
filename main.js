@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         batch-save
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.3.1
 // @description  batch save
 // @author       deycoesr@gmail.com
 // @match        *://pan.baidu.com/disk/main*
