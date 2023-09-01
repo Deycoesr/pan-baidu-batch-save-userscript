@@ -17,6 +17,10 @@
       let buttonGroup = document.querySelector(
         ".wp-s-core-pan__header-tool-bar--action > .wp-s-agile-tool-bar > .wp-s-agile-tool-bar__header > .wp-s-agile-tool-bar__h-group > .u-button-group"
       );
+      if (!buttonGroup) {
+        // 兼容旧版
+        buttonGroup = document.querySelector(".tcuLAu");
+      }
       if (buttonGroup) {
         appendBtn(buttonGroup);
       }
@@ -46,7 +50,7 @@
   }
 
   function createDividerElement() {
-    let pElem = document.createElement("p");
+    let pElem = document.createElement("span");
     pElem.innerText = "|";
     return pElem;
   }
