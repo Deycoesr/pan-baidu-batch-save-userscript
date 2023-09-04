@@ -143,7 +143,14 @@
     for (const url of urls) {
       targetWin.location.href = url;
 
-      await waitFound(() => targetWin.location.href.startsWith(url));
+      await waitFound(() => {
+        let submitBtn = targetWin.document.getElementById("submitBtn");
+        if (submitBtn && submitBtn.innerText === "提取文件") {
+          submitBtn.click();
+        }
+
+        return targetWin.location.href.startsWith(url);
+      });
 
       const targetDoc = targetWin.document;
 
