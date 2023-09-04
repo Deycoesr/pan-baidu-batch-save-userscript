@@ -32,8 +32,11 @@
     batchSaveBtn.id = uKey;
     batchSaveBtn.innerText = "批量保存";
     batchSaveBtn.onclick = (e) => batchSave.call(batchSaveBtn, e);
+    batchSaveBtn.style =
+      "background-color: #f0faff; border-bottom-left-radius: 16px; " +
+      "border-top-left-radius: 16px; margin-left: 5px; " +
+      "padding-left: 16px;padding-right: 5px;";
 
-    buttonGroup.append(createDividerElement());
     buttonGroup.append(batchSaveBtn);
 
     let batchUploadBtn = document.createElement("button");
@@ -46,17 +49,20 @@
       batchUploadInput.onchange = (e) => parseFolder.call(batchUploadBtn, e);
       batchUploadInput.click();
     };
+    batchUploadBtn.style =
+      "background-color: #f0faff; border-bottom-right-radius: 16px; " +
+      "border-top-right-radius: 16px; padding-right: 16px;" +
+      "padding-left: 5px; margin-right: 5px;";
 
     buttonGroup.append(createDividerElement());
     buttonGroup.append(batchUploadBtn);
-
-    buttonGroup.append(createDividerElement());
   }
 
   function createDividerElement() {
-    let pElem = document.createElement("span");
-    pElem.innerText = "|";
-    return pElem;
+    let elem = document.createElement("div");
+    elem.innerText = "|";
+    elem.style = "background-color: #f0faff; padding-top: 6px;";
+    return elem;
   }
 
   const PATH_SPLIT_REGEX = /[/\\]/,
