@@ -73,7 +73,7 @@
       }
       let urls = texts.reduce((left, right) => left + "\n" + right, "");
 
-      await doBatchSave(urls);
+      await doBatchSave.call(this, urls);
     } else {
       window.alert("未能获得到文件");
     }
@@ -124,6 +124,9 @@
       return;
     }
 
+    this.innerText = "共获得 " + urls.length + " 个有效链接";
+    console.log("batch-save; 有效的 urls = " + urls);
+
     let targetFolders = prompt(
       "以 '\\' 或 '/' 作为分隔符\n例子: 2023年/8月\\中旬\n默认为根目录\n输入存储路径:"
     );
@@ -142,9 +145,10 @@
       "width=1080,height=720"
     );
 
-    console.log("batch-save; 最终的 urls = " + urls);
-
-    for (const url of urls) {
+    for (let urlIndex = 0; urlIndex < urls.length; urlIndex++) {
+      let url = urls[urlIndex];
+      this.innerText =
+        "正在处理第 " + (urlIndex + 1) + " 个链接，共 " + urls.length + " 个";
       targetWin.location.href = url;
 
       await waitFound(() => {
@@ -287,7 +291,7 @@
       return;
     }
 
-    await doBatchSave(urlsText);
+    await doBatchSave.call(this, urlsText);
   }
 
   async function waitFound(conditionFun, maxnum = 300) {
