@@ -35,7 +35,8 @@
     batchSaveBtn.style =
       "background-color: #f0faff; border-bottom-left-radius: 16px; " +
       "border-top-left-radius: 16px; margin-left: 5px; " +
-      "padding-left: 16px;padding-right: 5px;";
+      "padding-left: 16px; padding-right: 8px; " + 
+      "border: 0; margin-right: -1px; height: 32px;";
 
     buttonGroup.append(batchSaveBtn);
 
@@ -51,17 +52,17 @@
     };
     batchUploadBtn.style =
       "background-color: #f0faff; border-bottom-right-radius: 16px; " +
-      "border-top-right-radius: 16px; padding-right: 16px;" +
-      "padding-left: 5px; margin-right: 5px;";
+      "border-top-right-radius: 16px; padding-right: 16px; " +
+      "padding-left: 8px; margin-right: 5px; " + 
+      "border: 0; height: 32px";
 
     buttonGroup.append(createDividerElement());
     buttonGroup.append(batchUploadBtn);
   }
 
   function createDividerElement() {
-    let elem = document.createElement("div");
-    elem.innerText = "|";
-    elem.style = "background-color: #f0faff; padding-top: 6px;";
+    let elem = document.createElement("span");
+    elem.style = "border-left: 1px solid black; height: 11px; margin-top: 11px";
     return elem;
   }
 
