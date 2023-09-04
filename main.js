@@ -10,10 +10,13 @@
 // ==/UserScript==
 
 (function () {
-  const uKey = "button-g0u198g2ukasd9761yhjkjbsd617872gv78asd";
+  const BUTTON_EXIST_ID = "button-g0u198g2ukasd9761yhjkjbsd617872gv78asd",
+    // 最后一次操作信息存储 KEY
+    LAST_OPT_INFO_LOCAL_STOREAGE_KEY =
+      "lastOpt:1i0v91h2daosf91oudhf981s8gpu18287he";
 
   setInterval(() => {
-    if (!document.getElementById(uKey)) {
+    if (!document.getElementById(BUTTON_EXIST_ID)) {
       let buttonGroup = document.querySelector(
         ".wp-s-core-pan__header-tool-bar--action > .wp-s-agile-tool-bar > .wp-s-agile-tool-bar__header > .wp-s-agile-tool-bar__h-group > .u-button-group"
       );
@@ -29,19 +32,23 @@
 
   function appendBtn(buttonGroup) {
     let batchSaveBtn = document.createElement("button");
-    batchSaveBtn.id = uKey;
-    batchSaveBtn.innerText = "批量保存";
+    batchSaveBtn.btnType = 0;
+    batchSaveBtn.id = BUTTON_EXIST_ID;
+    batchSaveBtn.originalInnerText = "批量保存";
+    batchSaveBtn.innerText = batchSaveBtn.originalInnerText;
     batchSaveBtn.onclick = (e) => batchSave.call(batchSaveBtn, e);
     batchSaveBtn.style =
       "background-color: #f0faff; border-bottom-left-radius: 16px; " +
       "border-top-left-radius: 16px; margin-left: 5px; " +
-      "padding-left: 16px; padding-right: 8px; " + 
+      "padding-left: 16px; padding-right: 8px; " +
       "border: 0; margin-right: -1px; height: 32px;";
 
     buttonGroup.append(batchSaveBtn);
 
     let batchUploadBtn = document.createElement("button");
-    batchUploadBtn.innerText = "选择文件夹";
+    batchUploadBtn.btnType = 1;
+    batchUploadBtn.originalInnerText = "选择文件夹";
+    batchUploadBtn.innerText = batchUploadBtn.originalInnerText;
     batchUploadBtn.onclick = function () {
       let batchUploadInput = document.createElement("input");
       batchUploadInput.type = "file";
@@ -53,11 +60,33 @@
     batchUploadBtn.style =
       "background-color: #f0faff; border-bottom-right-radius: 16px; " +
       "border-top-right-radius: 16px; padding-right: 16px; " +
-      "padding-left: 8px; margin-right: 5px; " + 
+      "padding-left: 8px; margin-right: 5px; " +
       "border: 0; height: 32px";
 
     buttonGroup.append(createDividerElement());
     buttonGroup.append(batchUploadBtn);
+
+    let lastOptInfo = localStorage[LAST_OPT_INFO_LOCAL_STOREAGE_KEY];
+    if (typeof lastOptInfo === "string") {
+      lastOptInfo = JSON.parse(lastOptInfo);
+      const btnTypeAry = [batchSaveBtn, batchUploadBtn];
+
+      let showLastOptInfoIntervalId,
+        remainSeconds = 6;
+      let showLastOptInfoFun = () => {
+        remainSeconds--;
+        let targetBtn = btnTypeAry[lastOptInfo.btnType];
+        targetBtn.innerText =
+          "上次共保存 " + lastOptInfo.total + " 个链接 (" + remainSeconds + ")";
+        if (remainSeconds < 1) {
+          targetBtn.innerText = targetBtn.originalInnerText;
+          localStorage.removeItem(LAST_OPT_INFO_LOCAL_STOREAGE_KEY);
+          clearInterval(showLastOptInfoIntervalId);
+        }
+      };
+      showLastOptInfoFun.call();
+      showLastOptInfoIntervalId = setInterval(showLastOptInfoFun, 1000);
+    }
   }
 
   function createDividerElement() {
@@ -84,6 +113,15 @@
     } else {
       window.alert("未能获得到文件");
     }
+  }
+
+  async function batchSave() {
+    let urlsText = prompt("以 '空格' 或 '换行' 作为间隔符\n输入分享链接:");
+    if (!urlsText) {
+      return;
+    }
+
+    await doBatchSave.call(this, urlsText);
   }
 
   /**
@@ -134,8 +172,11 @@
     this.innerText = "共获得 " + urls.length + " 个有效链接";
     console.log("batch-save; 有效的 urls = " + urls);
 
+    const now = new Date();
+
     let targetFolders = prompt(
-      "以 '\\' 或 '/' 作为分隔符\n例子: 2023年/8月\\中旬\n默认为根目录\n输入存储路径:"
+      "以 '/' 或 '\\' 作为分隔符\n无效路径默认为根目录\n输入存储路径:",
+      now.getFullYear() + "年/" + now.getMonth() + "月/" + now.getDay() + "号"
     );
     if (targetFolders) {
       targetFolders = targetFolders
@@ -286,19 +327,14 @@
       );
     }
 
+    localStorage[LAST_OPT_INFO_LOCAL_STOREAGE_KEY] = JSON.stringify({
+      btnType: this.btnType,
+      total: urls.length,
+    });
+
     targetWin.close();
 
     unsafeWindow.location.reload();
-  }
-
-  async function batchSave() {
-    let urlsText = prompt("以 '空格' 或 '换行' 作为间隔符\n输入分享链接:");
-    if (!urlsText || urlsText.length === 0) {
-      window.alert("输入的分享链接无效");
-      return;
-    }
-
-    await doBatchSave.call(this, urlsText);
   }
 
   async function waitFound(conditionFun, maxnum = 300) {
