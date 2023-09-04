@@ -1,11 +1,11 @@
 // ==UserScript==
-// @name         batch-save
-// @namespace    http://tampermonkey.net/
+// @name         百度云直链批量转存
+// @namespace    http://sub.ntt.ink/百度云直链批量转存.user.js
 // @version      0.3.2
-// @description  batch save
+// @description  百度云直链批量转存
 // @author       deycoesr@gmail.com
 // @match        *://pan.baidu.com/disk/*
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=baidu.com
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=pan.baidu.com
 // @grant        unsafeWindow
 // ==/UserScript==
 
