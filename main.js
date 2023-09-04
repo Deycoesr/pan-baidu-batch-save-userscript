@@ -36,15 +36,19 @@
     buttonGroup.append(createDividerElement());
     buttonGroup.append(batchSaveBtn);
 
-    let batchUploadInput = document.createElement("input");
-    batchUploadInput.type = "file";
-    batchUploadInput.webkitdirectory = true;
-    batchUploadInput.multiple = true;
-    batchUploadInput.innerText = "选择文件夹";
-    batchUploadInput.onchange = (e) => parseFolder.call(batchUploadInput, e);
+    let batchUploadBtn = document.createElement("button");
+    batchUploadBtn.innerText = "选择文件夹";
+    batchUploadBtn.onclick = function () {
+      let batchUploadInput = document.createElement("input");
+      batchUploadInput.type = "file";
+      batchUploadInput.webkitdirectory = true;
+      batchUploadInput.multiple = true;
+      batchUploadInput.onchange = (e) => parseFolder.call(batchUploadBtn, e);
+      batchUploadInput.click();
+    };
 
     buttonGroup.append(createDividerElement());
-    buttonGroup.append(batchUploadInput);
+    buttonGroup.append(batchUploadBtn);
 
     buttonGroup.append(createDividerElement());
   }
