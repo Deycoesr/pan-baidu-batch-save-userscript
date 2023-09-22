@@ -176,7 +176,7 @@
 
     let targetFolders = prompt(
       "以 '/' 或 '\\' 作为分隔符\n无效路径默认为根目录\n输入存储路径:",
-      now.getFullYear() + "年/" + now.getMonth() + "月/" + now.getDay() + "号"
+      `${now.getFullYear()}年/${now.getMonth() + 1}月/${now.getDate()}号`
     );
     if (targetFolders) {
       targetFolders = targetFolders
