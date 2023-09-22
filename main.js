@@ -37,11 +37,10 @@
     batchSaveBtn.originalInnerText = "批量保存";
     batchSaveBtn.innerText = batchSaveBtn.originalInnerText;
     batchSaveBtn.onclick = (e) => batchSave.call(batchSaveBtn, e);
-    batchSaveBtn.style =
-      "background-color: #f0faff; border-bottom-left-radius: 16px; " +
-      "border-top-left-radius: 16px; margin-left: 5px; " +
-      "padding-left: 16px; padding-right: 8px; " +
-      "border: 0; margin-right: -1px; height: 32px;";
+    batchSaveBtn.style = `background-color: #f0faff; border-bottom-left-radius: 16px; \
+       border-top-left-radius: 16px; margin-left: 5px; padding-left: \
+       16px; padding-right: 8px; border: 0; \
+       margin-right: -1px; height: 32px;`;
 
     buttonGroup.append(batchSaveBtn);
 
@@ -57,11 +56,10 @@
       batchUploadInput.onchange = (e) => parseFolder.call(batchUploadBtn, e);
       batchUploadInput.click();
     };
-    batchUploadBtn.style =
-      "background-color: #f0faff; border-bottom-right-radius: 16px; " +
-      "border-top-right-radius: 16px; padding-right: 16px; " +
-      "padding-left: 8px; margin-right: 5px; " +
-      "border: 0; height: 32px";
+    batchUploadBtn.style = `background-color: #f0faff; border-bottom-right-radius: 16px; \
+      border-top-right-radius: 16px; padding-right: 16px; \
+      padding-left: 8px; margin-right: 5px; \
+      border: 0; height: 32px`;
 
     buttonGroup.append(createDividerElement());
     buttonGroup.append(batchUploadBtn);
