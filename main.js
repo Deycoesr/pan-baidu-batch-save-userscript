@@ -193,6 +193,8 @@
 
     let errorMap = new Map();
 
+    let savedTotal = 0;
+
     for (let urlIndex = 0; urlIndex < urls.length; urlIndex++) {
       let url = urls[urlIndex];
       this.innerText =
@@ -331,11 +333,13 @@
           targetDoc.querySelector("div.info-section-title")?.innerText ===
           "保存成功"
       );
+
+      savedTotal++;
     }
 
     localStorage[LAST_OPT_INFO_LOCAL_STOREAGE_KEY] = JSON.stringify({
       btnType: this.btnType,
-      total: urls.length,
+      total: savedTotal,
     });
 
     await targetWin.close();
