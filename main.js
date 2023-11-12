@@ -191,6 +191,8 @@
       "width=1080,height=720"
     );
 
+    let errorMap = new Map();
+
     for (let urlIndex = 0; urlIndex < urls.length; urlIndex++) {
       let url = urls[urlIndex];
       this.innerText =
@@ -209,6 +211,12 @@
       const targetDoc = targetWin.document;
 
       await waitFound(() => targetDoc.readyState === "complete");
+
+      let errorReasonElem = targetDoc.querySelector("div.error-reason");
+      if (errorReasonElem) {
+        errorMap.set(url, errorReasonElem.textContent);
+        continue;
+      }
 
       let saveBtnPatten;
       if (targetWin.location.href.indexOf("path=") > 0) {
@@ -320,7 +328,7 @@
 
       await waitFound(
         () =>
-          targetDoc.querySelector("div.info-section-title")?.innerText ==
+          targetDoc.querySelector("div.info-section-title")?.innerText ===
           "保存成功"
       );
     }
@@ -330,14 +338,21 @@
       total: urls.length,
     });
 
-    targetWin.close();
+    await targetWin.close();
+
+    if (errorMap.size > 0) {
+      let errorMsg = [...errorMap.entries()]
+        .map(([url, errorReason]) => "[" + url + "]的失败原因: " + errorReason)
+        .reduce((prev, curr) => prev + "\n" + curr);
+      unsafeWindow.alert(errorMsg);
+    }
 
     unsafeWindow.location.reload();
   }
 
   async function waitFound(conditionFun, maxnum = 300) {
     let count = 0;
-    for (;;) {
+    for (; ;) {
       let param = await conditionFun.call();
       if (param && param.length !== 0) {
         return param;
