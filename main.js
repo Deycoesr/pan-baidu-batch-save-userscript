@@ -206,7 +206,8 @@
 
       await waitFound(() => {
         let submitBtn = targetWin.document.getElementById("submitBtn");
-        if (submitBtn && submitBtn.innerText === "提取文件") {
+        let tipsElement = document.getElementById("bctcKzym");
+        if (submitBtn && submitBtn.innerText === "提取文件" && !tipsElement) {
           submitBtn.click();
         }
 
