@@ -67,6 +67,9 @@
     let lastOptInfo = localStorage[LAST_OPT_INFO_LOCAL_STOREAGE_KEY];
     if (typeof lastOptInfo === "string") {
       lastOptInfo = JSON.parse(lastOptInfo);
+      if (lastOptInfo.errorMsg) {
+        window.alert(lastOptInfo.errorMsg);
+      }
       const btnTypeAry = [batchSaveBtn, batchUploadBtn];
 
       let showLastOptInfoIntervalId,
@@ -337,19 +340,20 @@
       savedTotal++;
     }
 
+    let errorMsg;
+    if (errorMap.size > 0) {
+      errorMsg = [...errorMap.entries()]
+        .map(([url, errorReason]) => "[" + url + "]的失败原因: " + errorReason)
+        .reduce((prev, curr) => prev + "\n" + curr);
+    }
+
     localStorage[LAST_OPT_INFO_LOCAL_STOREAGE_KEY] = JSON.stringify({
       btnType: this.btnType,
       total: savedTotal,
+      errorMsg: errorMsg
     });
 
     await targetWin.close();
-
-    if (errorMap.size > 0) {
-      let errorMsg = [...errorMap.entries()]
-        .map(([url, errorReason]) => "[" + url + "]的失败原因: " + errorReason)
-        .reduce((prev, curr) => prev + "\n" + curr);
-      unsafeWindow.alert(errorMsg);
-    }
 
     unsafeWindow.location.reload();
   }
